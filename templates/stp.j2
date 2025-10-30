@@ -1,0 +1,6 @@
+! ========= STP GLOBAL =========
+spanning-tree mode {{ stp.mode }}
+{% for line in stp.commands %}
+{{ line }}
+{% endfor %}
+! ======= end STP GLOBAL =======

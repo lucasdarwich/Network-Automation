@@ -1,0 +1,280 @@
+modelo:
+  infra_spec:
+    devices:
+      - hostname: "SwitchCore_1"
+        connection:
+          device_type: "cisco_ios"
+          host: "192.168.100.10"
+          username: "ldarwich"
+          password: "t3l3c013"
+          global_delay_factor: 1
+        vlans:
+          - { id: 10, name: "Ingenieria" }
+          - { id: 20, name: "Produccion" }
+          - { id: 30, name: "Finanzas" }
+        trunk_interfaces:
+          - {
+              name: "GigabitEthernet0/1",
+              description: "Trunk to SwitchA",
+              mode: "trunk",
+              allowed_vlans: "10,20,30",
+            }
+          - {
+              name: "GigabitEthernet0/2",
+              description: "Trunk to SwitchB",
+              mode: "trunk",
+              allowed_vlans: "10,20,30",
+            }
+          - {
+              name: "GigabitEthernet0/3",
+              description: "Trunk to SwitchC",
+              mode: "trunk",
+              allowed_vlans: "10,20,30",
+            }
+        access_interfaces: []
+        port_channel:
+          id: 1
+          description: "ICL to SwitchCore_2"
+          members: ["GigabitEthernet1/0", "GigabitEthernet1/1"]
+        stp:
+          mode: "rapid-pvst"
+          commands:
+            - "spanning-tree vlan 10 root primary"
+            - "spanning-tree vlan 30 root primary"
+            - "spanning-tree vlan 20 root secondary"
+        config_spec:
+          - {
+              data_path: "vlans",
+              template: "vlans.j2",
+              config_file: "vlans.cfg",
+            }
+          - {
+              data_path: "port_channel",
+              template: "port_channel.j2",
+              config_file: "port_channel.cfg",
+            }
+          - {
+              data_path: "trunk_interfaces",
+              template: "int_trunk.j2",
+              config_file: "int_trunk.cfg",
+            }
+          - {
+              data_path: "access_interfaces",
+              template: "int_access.j2",
+              config_file: "int_access.cfg",
+            }
+          - { data_path: "stp", template: "stp.j2", config_file: "stp.cfg" }
+
+      - hostname: "SwitchCore_2"
+        connection:
+          device_type: "cisco_ios"
+          host: "192.168.100.11"
+          username: "ldarwich"
+          password: "t3l3c013"
+          global_delay_factor: 1
+        vlans:
+          - { id: 10, name: "Ingenieria" }
+          - { id: 20, name: "Produccion" }
+          - { id: 30, name: "Finanzas" }
+        trunk_interfaces:
+          - {
+              name: "GigabitEthernet0/1",
+              description: "Trunk to SwitchA",
+              mode: "trunk",
+              allowed_vlans: "10,20,30",
+            }
+          - {
+              name: "GigabitEthernet0/2",
+              description: "Trunk to SwitchB",
+              mode: "trunk",
+              allowed_vlans: "10,20,30",
+            }
+          - {
+              name: "GigabitEthernet0/3",
+              description: "Trunk to SwitchC",
+              mode: "trunk",
+              allowed_vlans: "10,20,30",
+            }
+        access_interfaces: []
+        port_channel:
+          id: 1
+          description: "ICL to SwitchCore_1"
+          members: ["GigabitEthernet1/0", "GigabitEthernet1/1"]
+        stp:
+          mode: "rapid-pvst"
+          commands:
+            - "spanning-tree vlan 20 root primary"
+            - "spanning-tree vlan 10 root secondary"
+            - "spanning-tree vlan 30 root secondary"
+        config_spec:
+          - {
+              data_path: "vlans",
+              template: "vlans.j2",
+              config_file: "vlans.cfg",
+            }
+          - {
+              data_path: "port_channel",
+              template: "port_channel.j2",
+              config_file: "port_channel.cfg",
+            }
+          - {
+              data_path: "trunk_interfaces",
+              template: "int_trunk.j2",
+              config_file: "int_trunk.cfg",
+            }
+          - {
+              data_path: "access_interfaces",
+              template: "int_access.j2",
+              config_file: "int_access.cfg",
+            }
+          - { data_path: "stp", template: "stp.j2", config_file: "stp.cfg" }
+
+      - hostname: "SwitchA"
+        connection:
+          device_type: "cisco_ios"
+          host: "192.168.100.12"
+          username: "ldarwich"
+          password: "t3l3c013"
+          global_delay_factor: 1
+        vlans:
+          - { id: 10, name: "Ingenieria" }
+          - { id: 20, name: "Produccion" }
+          - { id: 30, name: "Finanzas" }
+        trunk_interfaces:
+          - {
+              name: "GigabitEthernet0/1",
+              description: "Uplink to Core1",
+              mode: "trunk",
+              allowed_vlans: "10,20,30",
+            }
+          - {
+              name: "GigabitEthernet0/2",
+              description: "Uplink to Core2",
+              mode: "trunk",
+              allowed_vlans: "10,20,30",
+            }
+        access_interfaces:
+          - {
+              name: "GigabitEthernet1/1",
+              description: "PC Ingenieria",
+              mode: "access",
+              vlan: 10,
+            }
+          - {
+              name: "GigabitEthernet1/2",
+              description: "PC Finanzas",
+              mode: "access",
+              vlan: 20,
+            }
+        config_spec:
+          - {
+              data_path: "vlans",
+              template: "vlans.j2",
+              config_file: "vlans.cfg",
+            }
+          - {
+              data_path: "trunk_interfaces",
+              template: "int_trunk.j2",
+              config_file: "int_trunk.cfg",
+            }
+          - {
+              data_path: "access_interfaces",
+              template: "int_access.j2",
+              config_file: "int_access.cfg",
+            }
+
+      - hostname: "SwitchB"
+        connection:
+          device_type: "cisco_ios"
+          host: "192.168.100.13"
+          username: "ldarwich"
+          password: "t3l3c013"
+          global_delay_factor: 1
+        vlans:
+          - { id: 10, name: "Ingenieria" }
+          - { id: 20, name: "Produccion" }
+          - { id: 30, name: "Finanzas" }
+        trunk_interfaces:
+          - {
+              name: "GigabitEthernet0/1",
+              description: "Uplink to Core1",
+              mode: "trunk",
+              allowed_vlans: "10,20,30",
+            }
+          - {
+              name: "GigabitEthernet0/2",
+              description: "Uplink to Core2",
+              mode: "trunk",
+              allowed_vlans: "10,20,30",
+            }
+        access_interfaces:
+          - {
+              name: "GigabitEthernet1/1",
+              description: "PC Produccion",
+              mode: "access",
+              vlan: 30,
+            }
+        config_spec:
+          - {
+              data_path: "vlans",
+              template: "vlans.j2",
+              config_file: "vlans.cfg",
+            }
+          - {
+              data_path: "trunk_interfaces",
+              template: "int_trunk.j2",
+              config_file: "int_trunk.cfg",
+            }
+          - {
+              data_path: "access_interfaces",
+              template: "int_access.j2",
+              config_file: "int_access.cfg",
+            }
+
+      - hostname: "SwitchC"
+        connection:
+          device_type: "cisco_ios"
+          host: "192.168.100.14"
+          username: "ldarwich"
+          password: "t3l3c013"
+          global_delay_factor: 1
+        vlans:
+          - { id: 10, name: "Ingenieria" }
+          - { id: 20, name: "Produccion" }
+          - { id: 30, name: "Finanzas" }
+        trunk_interfaces:
+          - {
+              name: "GigabitEthernet0/1",
+              description: "Uplink to Core1",
+              mode: "trunk",
+              allowed_vlans: "10,20,30",
+            }
+          - {
+              name: "GigabitEthernet0/2",
+              description: "Uplink to Core2",
+              mode: "trunk",
+              allowed_vlans: "10,20,30",
+            }
+        access_interfaces:
+          - {
+              name: "GigabitEthernet1/1",
+              description: "PC DataCenter",
+              mode: "access",
+              vlan: 30,
+            }
+        config_spec:
+          - {
+              data_path: "vlans",
+              template: "vlans.j2",
+              config_file: "vlans.cfg",
+            }
+          - {
+              data_path: "trunk_interfaces",
+              template: "int_trunk.j2",
+              config_file: "int_trunk.cfg",
+            }
+          - {
+              data_path: "access_interfaces",
+              template: "int_access.j2",
+              config_file: "int_access.cfg",
+            }

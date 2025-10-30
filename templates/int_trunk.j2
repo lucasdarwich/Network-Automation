@@ -1,0 +1,11 @@
+! ========= TRUNK INTERFACES =========
+! Device: {{ hostname }}
+{% for iface in trunk_interfaces %}
+interface {{ iface.name }}
+ description {{ iface.description }}
+ switchport mode {{ iface.mode }}
+ switchport trunk allowed vlan {{ iface.allowed_vlans }}
+ no shutdown
+ exit
+{% endfor %}
+! ======= end TRUNK INTERFACES =======

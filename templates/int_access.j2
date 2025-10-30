@@ -1,0 +1,11 @@
+! ========= ACCESS INTERFACES =========
+! Device: {{ hostname }}
+{% for iface in access_interfaces %}
+interface {{ iface.name }}
+ description {{ iface.description }}
+ switchport mode {{ iface.mode }}
+ switchport access vlan {{ iface.vlan }}
+ no shutdown
+ exit
+{% endfor %}
+! ======= end ACCESS INTERFACES =======

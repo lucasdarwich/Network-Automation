@@ -1,0 +1,8 @@
+! ========= VLANs =========
+! Device: {{ hostname }}
+{% for v in vlans %}
+vlan {{ v.id }}
+ name {{ v.name }}
+ exit
+{% endfor %}
+! ======= end VLANs =======

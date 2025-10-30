@@ -1,0 +1,21 @@
+! ========= PORT-CHANNEL =========
+! Device: {{ hostname }}
+{% set pcid = port_channel.id %}
+
+! Miembros físicos del Port-Channel
+{% for ifname in port_channel.members %}
+interface {{ ifname }}
+ description {{ port_channel.description }}
+ channel-group {{ pcid }} mode active
+ no shutdown
+ exit
+{% endfor %}
+
+! Interface lógica Port-channel
+interface Port-channel{{ pcid }}
+ description {{ port_channel.description }}
+ switchport mode trunk
+ switchport trunk allowed vlan {{ allowed_vlans }}
+ no shutdown
+ exit
+! ======= end PORT-CHANNEL =======
