@@ -52,6 +52,10 @@ laboratorio1/
 └─ SwitchC_int_access.cfg
 ```
 
+# 🗺️ Topología del Laboratorio
+
+![Topología del Laboratorio](/img/topologia.png)
+
 ## ⚙️ Flujo de Automatización
 
 ```
