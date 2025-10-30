@@ -1,0 +1,10 @@
+[project]
+name = "laboratorio1"
+version = "0.1.0"
+description = "Laboratorio 1"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "netmiko>=4.6.0",
+    "ninja2>=0.1",
+]
