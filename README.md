@@ -131,7 +131,7 @@ laboratorio1/
 ├─ main.py → Genera los archivos .cfg a partir del modelo y las plantillas
 ├─ apply.py → Aplica (vía Netmiko) las configuraciones generadas a los switches
 ├─ modelo.yaml → Modelo de red (inventario + templates + parámetros)
-│
+├─ yamltojson.py → Convierte el modelo YAML a formato JSON
 ├─ templates/ → Plantillas Jinja2
 │ ├─ vlans.j2
 │ ├─ int_trunk.j2
@@ -182,7 +182,57 @@ Incluye:
 
 👉 Cada switch tiene sus propios datos y templates asociados.
 
-### 🧰 2. main.py
+### 🧮 2. yamltojson.py
+
+El proyecto incluye un script llamado **`yamltojson.py`**, que permite **convertir el modelo de red (`modelo.yaml`) a formato JSON**.  
+Esta herramienta es útil para **visualizar el modelo en formato estructurado**, compartirlo con otras herramientas o prepararlo para futuras integraciones con **Ansible** y **APIs REST**.
+
+### 📘 Descripción del Script
+
+El código realiza una conversión directa de YAML → JSON:
+
+```python
+import yaml
+import json
+
+MODEL_FILE = "modelo.yaml"
+OUTPUT_FILE = "modelo.json"
+
+def main():
+    with open(MODEL_FILE, "r", encoding="utf-8") as f:
+        data = yaml.safe_load(f)
+
+    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=4)
+
+    print(f"✅ Archivo JSON generado: {OUTPUT_FILE}")
+
+if __name__ == "__main__":
+    main()
+```
+
+🖥️ Ejemplo de salida
+
+```
+{
+    "modelo": {
+        "infra_spec": {
+            "devices": [
+                {
+                    "hostname": "SwitchCore_1",
+                    "vlans": [
+                        { "id": 10, "name": "Ingenieria" },
+                        { "id": 20, "name": "Produccion" },
+                        { "id": 30, "name": "Finanzas" }
+                    ]
+                }
+            ]
+        }
+    }
+}
+```
+
+### 🧰 3. main.py
 
 Script principal que:
 
@@ -202,7 +252,7 @@ Script principal que:
 -> generado: configs\SwitchCore_1_stp.cfg
 ```
 
-### 🚀 3. apply.py
+### 🚀 4. apply.py
 
 Script que:
 
