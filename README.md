@@ -392,6 +392,62 @@ show vlan brief | include 10|20|30
 | `Command rejected: trunk encapsulation is auto` | Interfaz sin encapsulación fija    | Agregar `switchport trunk encapsulation dot1q` en el template |
 | Port-channel en estado “D” o “I”                | Configuración distinta entre cores | Asegurar mismos puertos, modo `active`, VLANs y ID            |
 
+---
+
+## 🧩 Importancia del JSON en la Segunda Parte del Curso (Ansible y Automatización Avanzada)
+
+Aunque en esta primera etapa del laboratorio trabajamos completamente con **YAML**, en la **segunda parte del curso** —donde se abordará la automatización con **Ansible** y la configuración avanzada de los **switches Core**— el uso de **JSON** cobra relevancia.
+
+### 📘 ¿Por qué JSON será importante más adelante?
+
+1. **Ansible trabaja internamente con JSON**
+
+   - Los _playbooks_ de Ansible se escriben en YAML, pero durante la ejecución, **Ansible convierte todo a JSON** para comunicarse con sus módulos.
+   - Esto significa que comprender JSON será clave para interpretar salidas, depurar módulos o integrar flujos de automatización.
+
+2. **Los módulos de red devuelven datos en JSON**
+
+   - Cuando Ansible ejecuta una tarea sobre un dispositivo (por ejemplo, un Core Cisco), la salida que obtiene y analiza está estructurada en JSON:
+     ```json
+     {
+       "changed": true,
+       "commands": ["vlan 10", "name Ingenieria"],
+       "stdout": ["VLAN created successfully"]
+     }
+     ```
+   - Esto permite procesar resultados, validar configuraciones y generar reportes automáticos.
+
+3. **Las APIs y controladores modernos usan JSON**
+
+   - En entornos de producción, herramientas como **RESTCONF**, **NETCONF**, **Cisco DNA Center**, **Meraki Dashboard API** o **FortiManager** se comunican exclusivamente en JSON.
+   - Entender su estructura será esencial cuando se integren estos controladores en la red de los cores.
+
+4. **Validación de datos con JSON Schema**
+   - En la segunda parte del curso también se verá cómo usar **JSON Schema** para validar estructuras de datos.
+   - Por ejemplo, validar que un modelo de VLAN tenga los campos `id` y `name` antes de aplicarse:
+     ```json
+     {
+       "type": "object",
+       "properties": {
+         "id": { "type": "integer" },
+         "name": { "type": "string" }
+       },
+       "required": ["id", "name"]
+     }
+     ```
+
+---
+
+### 🧠 En conclusión
+
+- En esta **primera parte**, YAML se utiliza por su **simplicidad y legibilidad** para generar configuraciones base (.cfg).
+- En la **segunda parte del curso**, JSON será fundamental para:
+  - Comprender la comunicación entre **Ansible** y los dispositivos.
+  - Interpretar salidas de módulos y validaciones de datos.
+  - Integrar APIs de red y controladores de infraestructura (especialmente para la **automatización de los cores**).
+
+> 💡 Por ahora, YAML nos permite trabajar cómodamente, pero dominar JSON será clave para el siguiente nivel de automatización con Ansible.
+
 ## ✍️ Autor
 
 ```
