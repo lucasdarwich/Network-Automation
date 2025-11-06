@@ -17,6 +17,100 @@ Automatizar la configuración de una topología compuesta por **2 switches core*
 
 ---
 
+## ⚙️ Requisitos Previos y Entorno de Trabajo
+
+Antes de ejecutar los scripts del laboratorio (`main.py` y `apply.py`), asegurate de contar con:
+
+### 🧱 Requisitos Previos
+
+- **Python 3.13** o superior instalado.
+- **uv** como gestor de entornos y dependencias.
+  > uv es una herramienta moderna que combina la creación de entornos virtuales y la instalación de paquetes, reemplazando a `venv` + `pip`.
+
+## 🚀 Iniciar el entorno con **uv**
+
+El proyecto incluye un archivo `pyproject.toml` con las dependencias declaradas:
+
+```toml
+[project]
+name = "laboratorio1"
+version = "0.1.0"
+description = "Laboratorio 1"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "netmiko>=4.6.0",
+    "jinja2>=3.1.4",
+    "pyyaml>=6.0.2"
+]
+```
+
+### 1. Instalar uv
+
+```
+pip install uv
+```
+
+### 2. Crear el entorno virtual
+
+```
+uv venv
+```
+
+Esto generará una carpeta .venv/ en el proyecto.
+
+### 3. Activar el entorno
+
+En Windows (PowerShell):
+
+```
+.\.venv\Scripts\activate
+```
+
+En Linux o macOS:
+
+```
+source .venv/bin/activate
+```
+
+Verás el nombre del entorno al inicio del prompt:
+
+```
+(laboratorio1) PS C:\Users\xxxxx\OneDrive\Documentos\Network Automation\laboratorio1>
+```
+
+### 4. Instalar las dependencias
+
+```
+uv sync
+```
+
+Esto descargará e instalará automáticamente:
+
+```
+jinja2
+netmiko
+pyyaml
+```
+
+### 5. Ejecutar los scripts del laboratorio
+
+```
+uv run python main.py
+uv run python apply.py
+```
+
+📎 main.py genera los archivos .cfg dentro de configs/
+📎 apply.py aplica esas configuraciones a los switches mediante SSH
+
+### 6. Desactivar el entorno
+
+```
+deactivate
+```
+
+---
+
 ## 🧩 Tecnologías y Librerías Utilizadas
 
 | Componente                                     | Función                                               | Librería / Herramienta |

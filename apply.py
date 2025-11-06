@@ -1,6 +1,6 @@
 # apply.py
 # Aplica los .cfg de ./configs a cada dispositivo según modelo_datos.yaml
-DRY_RUN = False  # poné False para empujar al switch
+DRY_RUN = False  # Valor False para empujar al switch - Valor True para solo imprimir
 
 import sys
 from pathlib import Path
